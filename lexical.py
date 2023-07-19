@@ -87,5 +87,6 @@ def analyze_c_program(file_path):
 
 
 # Usage example
-file_path = 'E:\\college\\coding\\programing\\Compiler_design\\test.txt'
-analyze_c_program(file_path)
+# file_path = 'E:\\college\\coding\\programing\\Compiler_design\\test.txt'
+# analyze_c_program(file_path)
+analyze_c_program("test.txt")

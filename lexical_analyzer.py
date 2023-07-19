@@ -15,7 +15,7 @@ class all_elements:
     special_chars = set(['(', ')', '{', '}', '[', ']', ',', ';'])
 
 
-class Lexical_analyzer(all_elements):
+class Lexical_analyzer():
     
     def __init__(self,text):
         self.text = text
@@ -29,9 +29,9 @@ class Lexical_analyzer(all_elements):
         content = re.sub(re.compile(r'/\*.*\*/', re.DOTALL), '', content) # remove all occurance streamed comments (/*COMMENT */) from string
         content = re.sub(re.compile(r'//.*\n'), '', content) # remove all occurance singleline comments (//COMMENT\n ) from string
 
-        escaped_operators = [re.escape(op) for op in operators] # escape all the operators by regex
-        escaped_single_operators = [re.escape(op) for op in single_operators] # escape all the single operators by regex
-        escaped_special_chars = [re.escape(special_char) for special_char in special_chars] # escape all the special characters by regex
+        escaped_operators = [re.escape(op) for op in all_elements.operators] # escape all the operators by regex
+        escaped_single_operators = [re.escape(op) for op in all_elements.single_operators] # escape all the single operators by regex
+        escaped_special_chars = [re.escape(special_char) for special_char in all_elements.special_chars] # escape all the special characters by regex
 
         # join all the escaped operators by |, the formed string for example ++|--|+=|-=|*=|/=|%=|==|!=|<=|>=|&&|\\|\\|
         operators_re = '|'.join(escaped_operators)
@@ -46,21 +46,21 @@ class Lexical_analyzer(all_elements):
         tokens = re.findall(r'\b\w+\b'+'|'+operators_re+'|'+single_operators_re+'|'+special_re, content)
 
         for token in tokens:
-            if token in keywords:
+            if token in all_elements.keywords:
                 # print(token ,"-> keyword")
                 key.append(token)
             elif token.isidentifier() and not token[0].isdigit():
                 # identifiers.add(token)
                 # print(token ,"-> identifier")
                 ids.append(token)
-            elif token in operators:
+            elif token in all_elements.operators:
                 # print('Operator:', token)
                 op.append(token)
-            elif token in single_operators:
+            elif token in all_elements.single_operators:
                 # print('Single Operator:', token)
                 single.append(token)
                 
-            elif token in special_chars:
+            elif token in all_elements.special_chars:
                 # print('Special Char:', token)
                 special.append(token)
             elif token.isdigit():

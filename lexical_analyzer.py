@@ -15,9 +15,11 @@ class all_elements:
     special_chars = set(['(', ')', '{', '}', '[', ']', ',', ';'])
 
 
-class Lexical_analyzer(all_elements):
+class Lexical_analyzer():
+
     
     def __init__(self,text):
+        # print(locals())
         self.text = text
         self.keywords = set()
         self.identifiers = set()
@@ -29,11 +31,12 @@ class Lexical_analyzer(all_elements):
         self.exponentials = set()
         
     def print_table(self):
-        # elements = {'keywords':list(key),'operators':list(op),
-        #             'identifiers':list(ids),'special':list(special),'numbers':list(nums),'single':list(single)}
+        
         elements = {'keywords':list(self.keywords),'operators':list(self.operators),'single_operators':list(self.single_operators)
                     ,'identifiers':list(self.identifiers),'special_char':list(self.special_chars)
                     ,'integers':list(self.integers),'floats':list(self.floats),'exponential':list(self.exponentials)}
+        
+
         # all the elements are not of same length so we need to make them of same length 
         # so that we can make a dataframe out of it
         max_len = 0
@@ -82,51 +85,42 @@ class Lexical_analyzer(all_elements):
         #tokenize the content with regex findall
         tokens = re.findall(r'\b\d+\.\d+\b|\b\w+\b'+'|'+operators_re+'|'+single_operators_re+'|'+special_re, content)
 
-        print(tokens)
+        # print(tokens)
 
         for token in tokens:
+
             if token in all_elements.keywords:
                 # print(token ,"-> keyword")
-                # key.append(token)
                 self.keywords.add(token)
+
             elif token.isidentifier() and not token[0].isdigit():
-                # identifiers.add(token)
                 # print(token ,"-> identifier")
-                # ids.append(token)
                 self.identifiers.add(token)
+
             elif token in all_elements.operators:
                 # print('Operator:', token)
-                # op.append(token)
                 self.operators.add(token)
             elif token in all_elements.single_operators:
                 # print('Single Operator:', token)
-                # single.append(token)
                 self.single_operators.add(token)
                 
             elif token in all_elements.special_chars:
                 # print('Special Char:', token)
-                # special.append(token)
                 self.special_chars.add(token)
+
             elif token[0].isdigit():
                 if '.' in token:
                     # print('Float:', token)
-                    # nums.append(token)
                     self.floats.add(token)
+
                 elif 'e' in token or 'E' in token:
                     # print('Exponential:', token)
-                    # nums.append(token)
                     self.exponentials.add(token)
+
                 else:
                     # print('Integer:', token)
-                    # nums.append(token)
                     self.integers.add(token)
 
-
-        # key,ids,op,special,nums,single = set(key),set(ids),set(op),set(special),set(nums),set(single)
-        
-        # Lexical_analyzer.print_table(key,op,ids,special,nums,single)
-
-        
 
         Lexical_analyzer.print_table(self)
 
